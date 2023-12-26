@@ -33,7 +33,7 @@ run: $(navilos)
 debug: $(navilos)
 	qemu-system-arm -M realview-pb-a8 -kernel $(navilos) -S -gdb tcp::1234,ipv4
 
-gdb:
+gdb:	
 	gdb-multiarch
 
 $(navilos): $(ASM_OBJS) $(C_OBJS) $(LINKER_SCRIPT)
