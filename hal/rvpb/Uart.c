@@ -19,8 +19,20 @@ void Hal_uart_init(void)
 
 void Hal_uart_put_char(uint8_t ch)
 {
-    //TXFF(Transmit FIFO)가 0이 되면 루프탈출
-    //0이 되면 T
+    //TXFF(Transmit FIFO)가 0이 되면(전송할 준비가 됬다면) 루프탈출    
     while(Uart->uartfr.bits.TXFF != 0); 
-    Uart->uartdr.all = (0xFF & ch);
+    //데이터 레지스터에 전송할 1바이트 데이터 ch를 저장한다.
+    Uart->uartdr.all = (ch & 0xFF);
+}
+
+/*
+    @ 문자열 출력 함수
+*/
+void Hal_uart_put_string(uint8_t *str)
+{
+    while(*str != '\0') //널 문자 나오기 전까지 루프실행
+    {
+        while(Uart->uartfr.bits.TXFF != 0); 
+        Uart->uartdr.all = (*str++);
+    }
 }
