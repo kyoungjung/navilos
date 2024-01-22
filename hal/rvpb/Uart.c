@@ -25,14 +25,3 @@ void Hal_uart_put_char(uint8_t ch)
     Uart->uartdr.all = (ch & 0xFF);
 }
 
-/*
-    @ 문자열 출력 함수
-*/
-void Hal_uart_put_string(uint8_t *str)
-{
-    while(*str != '\0') //널 문자 나오기 전까지 루프실행
-    {
-        while(Uart->uartfr.bits.TXFF != 0); 
-        Uart->uartdr.all = (*str++);
-    }
-}
