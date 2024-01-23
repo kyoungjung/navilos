@@ -65,5 +65,5 @@
 
         BL      main
     dummy_handler:
-    B   .
+        B .
 .end

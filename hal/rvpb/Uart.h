@@ -1,7 +1,7 @@
 #ifndef _UART_H
 #define _UART_H
 
-#include <stdint.h>
+#include "stdint.h"
 
 //** 첫번째 방법 C언어 매크로 사용 방법 ---
 // UART Data Register

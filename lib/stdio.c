@@ -1,6 +1,7 @@
-#include "/home/kjkim/navilos/include/stdint.h"
-#include "/home/kjkim/navilos/hal/HalUart.h"
-#include "/home/kjkim/navilos/lib/stdio.h"
+#include "stdint.h"
+#include "HalUart.h"
+#include "stdio.h"
+
 
 
 /*
@@ -14,6 +15,5 @@ uint32_t Hal_uart_put_string(const char *str)
         Hal_uart_put_char(*str++);
         c++;
     }
-
     return c;
 }
