@@ -25,3 +25,27 @@ void Hal_uart_put_char(uint8_t ch)
     Uart->uartdr.all = (ch & 0xFF);
 }
 
+/*
+    @ 비효율적인 uart 수신함수
+*/
+uint8_t Hal_uart_get_char(void)
+{
+    uint8_t data;   //수신 데이터 저장 변수
+
+    //uart flag register의 RXFE(Fifo Empty)가
+    //0이면 receive Fifo에 data가 있다.    
+    while(Uart->uartfr.bits.RXFE);
+
+    //data 레지스터의 error bit를 체크하여 error check
+    if((Uart->uartdr.bits.OE) || (Uart->uartdr.bits.BE) ||
+        (Uart->uartdr.bits.PE) || (Uart->uartdr.bits.FE))
+        {
+            Uart->uartrsr.bits.OE = 1;  //overrun error clear??
+
+            return 0;   //error 발생했으므로 리턴
+        }
+
+
+
+    return data;
+}
