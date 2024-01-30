@@ -25,6 +25,7 @@ void Hal_uart_put_char(uint8_t ch)
     Uart->uartdr.all = (ch & 0xFF);
 }
 
+#if 0
 /*
     @ 비효율적인 uart 수신함수
 */
@@ -41,11 +42,77 @@ uint8_t Hal_uart_get_char(void)
         (Uart->uartdr.bits.PE) || (Uart->uartdr.bits.FE))
         {
             Uart->uartrsr.bits.OE = 1;  //overrun error clear??
+            Uart->uartrsr.bits.BE = 1;  //Break error 
+            Uart->uartrsr.bits.PE = 1;  //Parity error clear
+            Uart->uartrsr.bits.FE = 1;  //Framing error clear
 
             return 0;   //error 발생했으므로 리턴
         }
 
+    //data register에 있는 uart 수신 데이터를 가져와 data변수에 저장
+    data = Uart->uartdr.bits.DATA;
+    //uart 수신데이터 return
+    return data;
+}
+#endif
 
+#if 0
+/*
+    @ 비효율적인 uart 수신함수
+            --> 1단계 최적화 코드작성
+*/
+uint8_t Hal_uart_get_char(void)
+{
+    uint8_t data;
+
+    //uart flag register의 RXFE(Fifo Empty)가
+    //0이면 receive Fifo에 data가 있다.    
+    while(Uart->uartfr.bits.RXFE);
+
+    //check error flag
+    //FE(8), PE(9), BE(10), OE(11)
+    if(Uart->uartdr.all & 0x00000F00)
+    {
+        Uart->uartrsr.all = 0x0000000F;
+
+        return 0;
+    }
+
+    data = Uart->uartdr.bits.DATA;
 
     return data;
 }
+#endif
+
+#if 1
+/*
+    @ 비효율적인 uart 수신함수
+            --> 1단계 최적화 코드작성
+                ---> 2단계 최적화 코드작성
+*/
+uint8_t Hal_uart_get_char(void)
+{
+    uint32_t data;
+
+    //uart flag register의 RXFE(Fifo Empty)가
+    //0이면 receive Fifo에 data가 있다.    
+    //receive Fifo에 data가 있으므로(0) while빠져나온다
+    while(Uart->uartfr.bits.RXFE);
+
+    //32bits uartdr(data register)값을 data변수에 저장
+    //uartdr구조
+    //  [31 : 12] Reserved
+    //  [11]OE, [10]BE, [9]PE, [8]FE
+    //  [7 : 0] DATA
+    data = Uart->uartdr.all;
+
+    if(data & 0x00000F00)
+    {
+        //Clear error
+        Uart->uartrsr.all = 0x0000000F;
+        return 0;
+    }
+
+    return (uint8_t)(data & 0x000000FF);
+}
+#endif
