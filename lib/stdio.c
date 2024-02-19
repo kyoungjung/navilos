@@ -2,8 +2,12 @@
 #include "HalUart.h"
 #include "stdio.h"
 
-uint32_t vsprintf(char *buf, const char* format, va_list arg);
-uint32_t utoa(char* buf, uint32_t val, utoa_t base);
+#define PRINTF_BUF_LEN  1024
+
+static char printf_buf[PRINTF_BUF_LEN];   // 1KB
+
+//uint32_t vsprintf(char *buf, const char* format, va_list arg);
+//uint32_t utoa(char* buf, uint32_t val, utoa_t base);
 
 /*
     @ 문자열 출력 함수
@@ -32,7 +36,8 @@ uint32_t Hal_uart_put_string(const char *str)
 */
 uint32_t debug_printf(const char* format, ...)
 {
-    va_list     args;
+    va_list     args;    
+
     va_start(args, format);
     vsprintf(printf_buf, format, args);
     va_end(args);
@@ -100,7 +105,7 @@ uint32_t vsprintf(char *buf, const char* format, va_list arg)
     if(c >= PRINTF_BUF_LEN)
     {        
         buf[0] = '\0';
-        return;
+        return 0;
     }
 
     buf[c] = '\0';
@@ -108,6 +113,18 @@ uint32_t vsprintf(char *buf, const char* format, va_list arg)
     return c;
 }
 
+/*
+
+    @ 부호없는 정수를 문자로 변환
+        - buf : 변환 결과가 저장된 버퍼
+        - val : 부호없는 정수 입력인자
+        - base : 변환형태가 10진형태 혹은 16진수형태인지를 알려주는 인자
+    typedef enum utoa_t
+    {
+        utoa_dec = 10,
+        utoa_hex = 16,
+    }utoa_t;
+*/
 uint32_t utoa(char* buf, uint32_t val, utoa_t base)
 {
     uint32_t    c = 0;
