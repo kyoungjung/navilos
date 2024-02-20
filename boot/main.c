@@ -27,6 +27,7 @@ void main(void)
    Hal_uart_put_string("Hello World!\n");
    Hal_uart_put_string("Hello World!\n");
 
+    Printf_test();
 
    i = 10;
 
@@ -40,7 +41,6 @@ void main(void)
         //i변수가 10이고 키보드로부터 문자 1개씩 받을때마다 i가 1씩 감소함
         //총 10개의 문자를 받아서 출력함
    }   
-
 }
 
 static void Hw_Init(void)
@@ -58,6 +58,6 @@ static void Printf_test(void)
     debug_printf("output string pointer : %s\r\n", str);
     debug_printf("%s is null pointer, %u number\r\n", nullptr, 10);
     debug_printf("%u = 5\r\n", i);
-    debug_printf("dec : %d, hex : %x\r\n", 0xff, 0xff);
+    debug_printf("dec : %u, hex : %x\r\n", 0xff, 0xff);
     debug_printf("print zero %u\r\n", 0);
 }

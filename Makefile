@@ -9,7 +9,7 @@ LD=arm-none-eabi-gcc
 OC=arm-none-eabi-objcopy
 
 LINKER_SCRIPT= ./navilos.ld
-MAP_FILE = build/navilos.map
+MAP_FILE = ./build/navilos.map
 
 ASM_SRCS = $(wildcard boot/*.S)
 ASM_OBJS = $(patsubst boot/%.S, build/%.os, $(ASM_SRCS))
@@ -29,7 +29,6 @@ INC_DIRS =	-I include	\
 			-I lib
 
 CFLAGS = -c -g -std=c11
-
 LDFLAGS = -nostartfiles -nostdlib -nodefaultlibs -static -lgcc
 
 navilos = navilos.axf
@@ -52,7 +51,7 @@ gdb:
 	gdb-multiarch
 
 $(navilos): $(ASM_OBJS) $(C_OBJS) $(LINKER_SCRIPT)
-	$(LD) -n -T $(LINKER_SCRIPT) -o $(navilos) $(ASM_OBJS) $(C_OBJS) -Wl, -Map=$(MAP_FILE) $(LDFLAGS)
+	$(LD) -n -T $(LINKER_SCRIPT) -o $(navilos) $(ASM_OBJS) $(C_OBJS) -Wl,-Map=$(MAP_FILE) $(LDFLAGS)
 	$(OC) -O binary $(navilos) $(navilos_bin)
 
 build/%.os: %.S
