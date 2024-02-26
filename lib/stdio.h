@@ -1,8 +1,7 @@
 #ifndef LIB_STDIO_H
 #define LIB_STDIO_H
 
-//#include "stdarg.h"
-#include "/home/kjkim/navilos/include/stdarg.h"
+#include "stdarg.h"
 
 typedef enum utoa_t
 {

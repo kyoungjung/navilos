@@ -70,7 +70,7 @@ uint32_t vsprintf(char *buf, const char* format, va_list arg)
 
                 case 's' :
                 //arg위치에서 char* 타입 값을 읽어서 str 포인터 변수에 저장
-                str = (char*)va_arg(arg, char*);                
+                str = (char*)va_arg(arg, char*);                                
                 if(str == NULL)
                 {
                     //str이 NULL이면 str에 (null)문자열포인터 저장
@@ -85,12 +85,12 @@ uint32_t vsprintf(char *buf, const char* format, va_list arg)
                 break;
 
                 case 'u' :
-                uint = (uint32_t)va_arg(arg, uint32_t);
+                uint = (uint32_t)va_arg(arg, uint32_t);                
                 c += utoa(&buf[c], uint, utoa_dec);
                 break;
 
                 case 'x' :
-                hex = (uint32_t)va_arg(arg, uint32_t);
+                hex = (uint32_t)va_arg(arg, uint32_t);                
                 c += utoa(&buf[c], hex, utoa_hex);
                 break;
             }

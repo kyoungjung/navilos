@@ -29,7 +29,13 @@ void main(void)
 
     Printf_test();
 
-    while(1);   // 무한루프
+    while(1)   // 무한루프
+    {
+        if('q' == Hal_uart_get_char())
+        {
+            return;
+        }
+    }
 }
 
 static void Hw_Init(void)
@@ -48,5 +54,5 @@ static void Printf_test(void)
     debug_printf("%s is null pointer, %u number\r\n", nullptr, 10);
     debug_printf("%u = 5\r\n", i);
     debug_printf("dec : %u, hex : %x\r\n", 0xff, 0xff);
-    debug_printf("print zero %u\r\n", 0);
+    debug_printf("print zero %u\r\n", 0);    
 }
