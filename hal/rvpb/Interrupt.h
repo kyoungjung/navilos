@@ -4,8 +4,15 @@
 #include "stdint.h"
 
 
-#define GIC_CPU_InterFaceReg_BASE               0x1E000000
-#define GIC_DistriButorReg_BASE                 0x1E001000    
+#define GIC_CPU_InterFaceReg_BASE               0x1E000000      //CPU INterface Base Address
+#define GIC_DistriButorReg_BASE                 0x1E001000      //distributor Base Address
+
+#define GIC_PRIORITY_MASK_NONE                  0xF
+
+#define GIC_IRQ_START                           32
+#define GIC_IRQ_END                             95
+
+
 
 /*
     @ CPU control register
@@ -296,42 +303,195 @@ typedef union Clear_enable2_t
     }; 
 }Clear_enable2_t;
 
+/*
+    @ Set-pending0 register
+        - The Set-pending0 register at address offset 0x200 is reserved for private use in the PB-A8
+*/
+typedef union Set_pending0_t
+{
+    uint32_t all;
+    struct
+    {
+        uint32_t Reserved            :32; // 0:31
+    }; 
+}Set_pending0_t;
 
+/*
+    @ Set-pending1 register
+    31                                                             0
+    ---------------------------------------------------------------|
+    |                  Interrupt Pending(ID63 to ID32)             |
+    ---------------------------------------------------------------|
+*/
+typedef union Set_pending1_t
+{
+    uint32_t all;
+    struct
+    {
+        uint32_t Interrupt_Pending            :32; // 0:31
+    }; 
+}Set_pending1_t;
+
+/*
+    @ The Set-pending2 register
+    31                                                             0
+    ---------------------------------------------------------------|
+    |                  Interrupt Pending(ID95 to ID64)             |
+    ---------------------------------------------------------------|
+*/
+typedef union Set_pending2_t
+{
+    uint32_t all;
+    struct
+    {
+        uint32_t Interrupt_Pending            :32; // 0:31
+    }; 
+}Set_pending2_t;
+
+/*
+    @ Clear-pending0 register
+        - The Clear-pending0 register at address offset 0x280 is reserved for private use in the PB-A8
+*/
+typedef union Clear_pending0_t
+{
+    uint32_t all;
+    struct
+    {
+        uint32_t Reserved            :32; // 0:31
+    }; 
+}Clear_pending0_t;
+
+/*
+    @ Clear-pending1 register
+    31                                                             0
+    ---------------------------------------------------------------|
+    |                  Interrupt Pending(ID63 to ID32)             |
+    ---------------------------------------------------------------|
+*/
+typedef union Clear_pending1_t
+{
+    uint32_t all;
+    struct
+    {
+        uint32_t Interrupt_Pending            :32; // 0:31
+    }; 
+}Clear_pending1_t;
+
+/*
+    @ The Clear-pending2 register
+    31                                                             0
+    ---------------------------------------------------------------|
+    |                  Interrupt Pending(ID95 to ID64)             |
+    ---------------------------------------------------------------|
+*/
+typedef union Clear_pending2_t
+{
+    uint32_t all;
+    struct
+    {
+        uint32_t Interrupt_Pending            :32; // 0:31
+    }; 
+}Clear_pending2_t;
+
+/*
+    @ Active0 register
+        - The Active0 register at address offset 0x300 is reserved for private use in the PB-A8
+*/
+typedef union Active0_t
+{
+    uint32_t all;
+    struct
+    {
+        uint32_t Reserved            :32; // 0:31
+    }; 
+}Active0_t;
+
+/*
+    @ Active1 register
+    31                                                             0
+    ---------------------------------------------------------------|
+    |                  Interrupt Active(ID63 to ID32)              |
+    ---------------------------------------------------------------|
+*/
+typedef union Active1_t
+{
+    uint32_t all;
+    struct
+    {
+        uint32_t Interrupt_Active            :32; // 0:31
+    }; 
+}Active1_t;
+
+/*
+    @ Active2 register
+    31                                                             0
+    ---------------------------------------------------------------|
+    |                  Interrupt Active(ID95 to ID64)              |
+    ---------------------------------------------------------------|
+*/
+typedef union Active2_t
+{
+    uint32_t all;
+    struct
+    {
+        uint32_t Interrupt_Active            :32; // 0:31
+    }; 
+}Active2_t;
+
+
+/*
+    @ Priority register
+    31          28  27          24  23          20  19          16  15          12  11          8   7           4   3       0
+    ------------|   |------------|  |-----------|   |-----------|   |-----------|   |-----------|   |-----------|   |-------|
+    ID n+3             SBZ              ID n+2          SBZ           ID n+3            SBZ           IC n            SBZ
+    Priority                            Prioriy                       Priority                        Priority
+    ------------------------------------------------------------------------------------------------------------------------|    
+*/
+typedef union Priority_t
+{
+    uint32_t all;
+    struct
+    {
+
+    };
+}Priority_t;
 
 //GIC Distribution registers
 typedef struct GIC_Ditribution_t
 {
     Distributor_control_t           Dis_Distributor_control;        // 0x000
     Controller_type_t               Dis_Controller_type;            // 0x004
-    uint32_t                        Reserved1[62];                  // 0x008 - 0x0FC
-    Set_enable0_t                   Dis_Set_enable0;                // 0x100
+    uint32_t                        Reserved0[62];                  // 0x008 - 0x0FC
+    uint32_t                        Reserved1;                      // 0x100
+//  Set_enable0_t                   Dis_Set_enable0;                // 0x100
     Set_enable1_t                   Dis_Set_enable1;                // 0x104
     Set_enable2_t                   Dis_Set_enable2;                // 0x108    
     uint32_t                        Reserved2[29];                  // 0x10C - 0x17C
-    Clear_enable0_t                 Dis_Clear_enable0;              // 0x180
+    uint32_t                        Reserved3;                      // 0x180
+//  Clear_enable0_t                 Dis_Clear_enable0;              // 0x180
     Clear_enable1_t                 Dis_Clear_enable1;              // 0x184
     Clear_enable2_t                 Dis_Clear_enable2;              // 0x188
-    uint32_t                        Reserved3[29];                  // 0x18C - 0x1FC
-    Set_pending0_t                  Dis_Set_pending0;               // 0x200
-    Set_pending1_t                  Dis_Set_pending1;               // 0x204
-    Set_pending2_t                  Dis_Set_pending2;               // 0x208
-    uint32_t                        Reserved4[29];                  // 0x20C - 0x27C
-    Clear_pending0_t                Dis_Clear_pending0;             // 0x280
-    Clear_pending1_t                Dis_Clear_pending1;             // 0x284
-    Clear_pending2_t                Dis_Clear_pending2;             // 0x288
-    uint32_t                        Reserved5[29];                  // 0x28C - 0x2FC
-    Active0_t                       Dis_Active0;                    // 0x300
-    Active1_t                       Dis_Active1;                    // 0x304
-    Active2_t                       Dis_Active2;                    // 0x308
-    uint32_t                        Reserved6[61];                  // 0x30C - 0x3FC
-    Priority_t                      Dis_Priority[24];               // 0x400 - 0x45C
-    uint32_t                        Reserved7[232];                 // 0x460 - 0x7FC
-    CPU_targets_t                   Dis_CPU_targets[24];            // 0x800 - 0x85C
-    uint32_t                        Reserved8[232];                 // 0x860 - 0xBFC
-    Configuration_t                 Dis_Configuration[6];           // 0xC00 - 0xC14
-    uint32_t                        Reserved9[186];                 // 0xC18 - 0xEFC
-    Software_interrupt_t            Dis_Software_interrupt;         // 0xF00
-    uint32_t                        Reserved10[63];                 // 0xF04 - 0xFFC
+//  uint32_t                        Reserved2[29];                  // 0x18C - 0x1FC
+//    Set_pending0_t                  Dis_Set_pending0;               // 0x200
+//    Set_pending1_t                  Dis_Set_pending1;               // 0x204
+//    Set_pending2_t                  Dis_Set_pending2;               // 0x208
+//    uint32_t                        Reserved3[29];                  // 0x20C - 0x27C
+//    Clear_pending0_t                Dis_Clear_pending0;             // 0x280
+//    Clear_pending1_t                Dis_Clear_pending1;             // 0x284
+//    Clear_pending2_t                Dis_Clear_pending2;             // 0x288
+//    uint32_t                        Reserved4[29];                  // 0x28C - 0x2FC
+//    Active0_t                       Dis_Active0;                    // 0x300
+//    Active1_t                       Dis_Active1;                    // 0x304
+//    Active2_t                       Dis_Active2;                    // 0x308
+//    uint32_t                        Reserved5[61];                  // 0x30C - 0x3FC
+//    Priority_t                      Dis_Priority[24];               // 0x400 - 0x45C
+//    uint32_t                        Reserved6[232];                 // 0x460 - 0x7FC
+//    CPU_targets_t                   Dis_CPU_targets[24];            // 0x800 - 0x85C
+//    uint32_t                        Reserved7[232];                 // 0x860 - 0xBFC
+//    Configuration_t                 Dis_Configuration[6];           // 0xC00 - 0xC14
+//    uint32_t                        Reserved8[186];                 // 0xC18 - 0xEFC
+//    Software_interrupt_t            Dis_Software_interrupt;         // 0xF00
+//    uint32_t                        Reserved9[63];                 // 0xF04 - 0xFFC
 
 }GIC_Ditribution_t;
 
