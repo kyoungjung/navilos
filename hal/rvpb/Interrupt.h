@@ -31,7 +31,7 @@ typedef union CPU_control_t
     {
         uint32_t Enable     :1;     // 0
         uint32_t Reserved   :31;    // 1:31
-    };
+    }bits;
     
 }CPU_control_t;
 
@@ -53,7 +53,7 @@ typedef union Priority_mask_t
         uint32_t Reserved1          :4;     // 0:3
         uint32_t Priority_mask      :4;     // 4:7
         uint32_t Reserved2          :24;    // 8:31
-    };
+    }bits;
 }Priority_mask_t;
 
 /*
@@ -74,7 +74,7 @@ typedef union Binary_point_t
     {
         uint32_t Binary_point       :3;     // 0:2
         uint32_t Reserved           :29;    // 3:31    
-    };
+    }bits;
     
 }Binary_point_t;
 
@@ -96,7 +96,7 @@ typedef union Interrupt_acknowledge_t
         uint32_t InterruptID            :10;    // 0:9
         uint32_t CPUsourceID            :3;     // 10:12
         uint32_t Reserved               :19;    // 13:31
-    };
+    }bits;
 }Interrupt_acknowledge_t;
 
 /*
@@ -117,7 +117,7 @@ typedef union End_of_interrupt_t
         uint32_t InterruptID            :10;    // 0:9
         uint32_t CPUsourceID            :3;     // 10:12
         uint32_t Reserved               :19;    // 13:31
-    };
+    }bits;
 }End_of_interrupt_t;
 
 
@@ -136,7 +136,7 @@ typedef union Running_interrupt_t
         uint32_t Reserved1          :4;     // 0:3
         uint32_t Priority           :4;     // 4:7
         uint32_t Reserved2          :24;    // 8:31
-    };
+    }bits;
 }Running_interrupt_t;
 
 /*
@@ -157,7 +157,7 @@ typedef union Highest_pending_interrupt_t
         uint32_t InterruptID            :10;    // 0:9
         uint32_t CPUsourceID            :3;     // 10:12
         uint32_t Reserved               :19;    // 13:31
-    };
+    }bits;
 }Highest_pending_interrupt_t;
 
 //GIC CPU Interface
@@ -190,7 +190,7 @@ typedef union Distributor_control_t
     {
         uint32_t Enable                 :1;     // 0
         uint32_t Reserved               :31;    // 1:31
-    };
+    }bits;
 }Distributor_control_t;
 
 /*
@@ -208,7 +208,7 @@ typedef union Controller_type_t
         uint32_t ID_lines_number                :5;  // 0:4
         uint32_t CPU_number                     :3;  // 4:7
         uint32_t reserved                       :24; // 8:31
-    };
+    }bits;
 }Controller_type_t;
 
 
@@ -222,7 +222,7 @@ typedef union Set_enable0_t
     struct
     {
         uint32_t Reserved            :32; // 0:31
-    }; 
+    }bits; 
 }Set_enable0_t;
 
 /*
@@ -238,7 +238,7 @@ typedef union Set_enable1_t
     struct
     {
         uint32_t Interrupt_Enable            :32; // 0:31
-    }; 
+    }bits; 
 }Set_enable1_t;
 
 /*
@@ -254,7 +254,7 @@ typedef union Set_enable2_t
     struct
     {
         uint32_t Interrupt_Enable            :32; // 0:31
-    }; 
+    }bits; 
 }Set_enable2_t;
 
 /*
@@ -267,7 +267,7 @@ typedef union Clear_enable0_t
     struct
     {
         uint32_t Reserved            :32; // 0:31
-    }; 
+    }bits; 
 }Clear_enable0_t;
 
 
@@ -284,7 +284,7 @@ typedef union Clear_enable1_t
     struct
     {
         uint32_t Interrupt_Enable            :32; // 0:31
-    }; 
+    }bits; 
 }Clear_enable1_t;
 
 /*
@@ -300,7 +300,7 @@ typedef union Clear_enable2_t
     struct
     {
         uint32_t Interrupt_Enable            :32; // 0:31
-    }; 
+    }bits; 
 }Clear_enable2_t;
 
 /*
@@ -313,7 +313,7 @@ typedef union Set_pending0_t
     struct
     {
         uint32_t Reserved            :32; // 0:31
-    }; 
+    }bits; 
 }Set_pending0_t;
 
 /*
@@ -329,7 +329,7 @@ typedef union Set_pending1_t
     struct
     {
         uint32_t Interrupt_Pending            :32; // 0:31
-    }; 
+    }bits; 
 }Set_pending1_t;
 
 /*
@@ -345,7 +345,7 @@ typedef union Set_pending2_t
     struct
     {
         uint32_t Interrupt_Pending            :32; // 0:31
-    }; 
+    }bits; 
 }Set_pending2_t;
 
 /*
@@ -358,7 +358,7 @@ typedef union Clear_pending0_t
     struct
     {
         uint32_t Reserved            :32; // 0:31
-    }; 
+    }bits; 
 }Clear_pending0_t;
 
 /*
@@ -374,7 +374,7 @@ typedef union Clear_pending1_t
     struct
     {
         uint32_t Interrupt_Pending            :32; // 0:31
-    }; 
+    }bits; 
 }Clear_pending1_t;
 
 /*
@@ -390,7 +390,7 @@ typedef union Clear_pending2_t
     struct
     {
         uint32_t Interrupt_Pending            :32; // 0:31
-    }; 
+    }bits; 
 }Clear_pending2_t;
 
 /*
@@ -403,7 +403,7 @@ typedef union Active0_t
     struct
     {
         uint32_t Reserved            :32; // 0:31
-    }; 
+    }bits; 
 }Active0_t;
 
 /*
@@ -419,7 +419,7 @@ typedef union Active1_t
     struct
     {
         uint32_t Interrupt_Active            :32; // 0:31
-    }; 
+    }bits; 
 }Active1_t;
 
 /*
@@ -435,26 +435,11 @@ typedef union Active2_t
     struct
     {
         uint32_t Interrupt_Active            :32; // 0:31
-    }; 
+    }bits; 
 }Active2_t;
 
 
-/*
-    @ Priority register
-    31          28  27          24  23          20  19          16  15          12  11          8   7           4   3       0
-    ------------|   |------------|  |-----------|   |-----------|   |-----------|   |-----------|   |-----------|   |-------|
-    ID n+3             SBZ              ID n+2          SBZ           ID n+3            SBZ           IC n            SBZ
-    Priority                            Prioriy                       Priority                        Priority
-    ------------------------------------------------------------------------------------------------------------------------|    
-*/
-typedef union Priority_t
-{
-    uint32_t all;
-    struct
-    {
 
-    };
-}Priority_t;
 
 //GIC Distribution registers
 typedef struct GIC_Ditribution_t
