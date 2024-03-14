@@ -16,3 +16,4 @@ volatile GIC_CPU_InterFace_t* GicCpu = (GIC_CPU_InterFace_t*)GIC_CPU_InterFaceRe
 //구조체 포인터 변수 GicDist GIC Distributor 레지스터 베이스 주소 할당
 //각 레지스터 주소가 4바이트 간격이므로 각 레지스터의 이름으로 메모리 접근 가능
 volatile GIC_Ditribution_t* GicDist = (GIC_Ditribution_t*)GIC_DistriButorReg_BASE;
+
