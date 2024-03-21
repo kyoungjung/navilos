@@ -40,7 +40,10 @@ void main(void)
 
 static void Hw_Init(void)
 {    
-    Hal_uart_init();
+    //Hal_uart_init()함수에서 인터럽트 관련 함수를 호출하므로
+    //인터럽트 초기화를 먼저 해줘야 한다.
+    Hal_interrupt_init();
+    Hal_uart_init();    
 }
 
 static void Printf_test(void)

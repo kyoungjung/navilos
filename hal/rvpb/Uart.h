@@ -21,6 +21,7 @@
 //** 두번째 방법 구조체 사용 ---
 
 #define UART_BASE_ADDRESS0                  0x10009000
+#define UART_INTERRUPT0                     44
 
 //Data Register bits
 typedef union UARTDR_t
